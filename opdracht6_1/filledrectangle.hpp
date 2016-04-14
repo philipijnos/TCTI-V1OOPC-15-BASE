@@ -15,6 +15,7 @@ private:
    window & w;
 public:
    filledrectangle( window & w, int p_start_x, int p_start_y, int p_end_x, int p_end_y ):
+<<<<<<< HEAD
 		p_start_x(p_start_x),
 		p_start_y(p_start_y),
 		p_end_x(p_end_x),
@@ -22,6 +23,15 @@ public:
 		w(w)
 	{}
    void draw();
+=======
+		p_start_x(p_start_x);
+		p_start_y(p_start_y);
+		p_end_x(p_end_x);
+		p_end_y(p_end_y);
+		w(w);
+	{}
+   void print();
+>>>>>>> 513fa1437ce4d27f8aa01ce9002c36e4f0ae628c
 };
 
 
