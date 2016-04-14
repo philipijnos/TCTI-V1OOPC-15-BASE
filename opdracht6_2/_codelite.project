@@ -29,6 +29,8 @@
     <File Name="rectangle.hpp"/>
     <File Name="window.cpp"/>
     <File Name="window.hpp"/>
+    <File Name="trein.cpp"/>
+    <File Name="trein.hpp"/>
   </VirtualDirectory>
   <Settings Type="Executable">
     <GlobalSettings>
