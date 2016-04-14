@@ -1,9 +1,8 @@
-// template
+//Prints a filled rectangle
 
 #include <iostream>
 
 #include "window.hpp"
-#include "line.hpp"
 #include "filledrectangle.hpp"
 
 int main(int argc, char **argv){
