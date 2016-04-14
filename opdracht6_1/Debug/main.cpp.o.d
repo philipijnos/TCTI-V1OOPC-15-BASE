@@ -1,7 +1,5 @@
-Debug/main.cpp.o: main.cpp window.hpp line.hpp filledrectangle.hpp
+Debug/main.cpp.o: main.cpp window.hpp filledrectangle.hpp
 
 window.hpp:
-
-line.hpp:
 
 filledrectangle.hpp:

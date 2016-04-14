@@ -1,19 +1,28 @@
 // example:
-// declaration of a rectangle object that is contains four line objects
+// declaration of a filled rectangle object
 
-#ifndef RECTANGLE_HPP
-#define RECTANGLE_HPP
+#ifndef FILLEDRECTANGLE_HPP
+#define FILLEDRECTANGLE_HPP
 
 #include "window.hpp"
-#include "line.hpp"
 
 class filledrectangle {
 private:
-   line left, right, top, bottom;
+   int p_start_x;
+   int p_start_y;
+   int p_end_x;
+   int p_end_y;
+   window & w;
 public:
-   filledrectangle( window & w, int start_x, int start_y, int end_x, int end_y );
-   void print();
+   filledrectangle( window & w, int p_start_x, int p_start_y, int p_end_x, int p_end_y ):
+		p_start_x(p_start_x),
+		p_start_y(p_start_y),
+		p_end_x(p_end_x),
+		p_end_y(p_end_y),
+		w(w)
+	{}
+   void draw();
 };
 
 
-#endif // RECTANGLE_HPP
+#endif // FILLEDRECTANGLE_HPP
