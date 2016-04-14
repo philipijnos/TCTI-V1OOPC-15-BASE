@@ -29,8 +29,10 @@
     <File Name="rectangle.hpp"/>
     <File Name="window.cpp"/>
     <File Name="window.hpp"/>
-    <File Name="train.cpp"/>
-    <File Name="train.hpp"/>
+    <File Name="house.hpp"/>
+    <File Name="house.cpp"/>
+    <File Name="../opdracht6_1/filledrectangle.cpp"/>
+    <File Name="../opdracht6_1/filledrectangle.hpp"/>
   </VirtualDirectory>
   <Settings Type="Executable">
     <GlobalSettings>
