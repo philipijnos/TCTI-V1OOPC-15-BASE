@@ -12,7 +12,7 @@
 int main(int argc, char **argv){
    window w( 128, 64, 2 );
    
-   house openHouse( w, 0, 0, 30, 20, true );
+   house openHouse( w, 30, 20, 0, 0, false );
    openHouse.print();
    
    return 0;

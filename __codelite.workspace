@@ -216,7 +216,7 @@
       <Project Name="12-01-doxygen" ConfigName="Release"/>
     </WorkspaceConfiguration>
   </BuildMatrix>
-  <Project Name="13-01-rational" Path="13-01-rational/_codelite.project" Active="No"/>
+  <Project Name="13-01-rational" Path="13-01-rational/_codelite.project" Active="Yes"/>
   <BuildMatrix>
     <WorkspaceConfiguration Name="Release" Selected="yes">
       <Project Name="13-01-rational" ConfigName="Release"/>
@@ -318,7 +318,7 @@
       <Project Name="opdracht6_1" ConfigName="Release"/>
     </WorkspaceConfiguration>
   </BuildMatrix>
-  <Project Name="opdracht6_2" Path="opdracht6_2/_codelite.project" Active="Yes"/>
+  <Project Name="opdracht6_2" Path="opdracht6_2/_codelite.project" Active="No"/>
   <BuildMatrix>
     <WorkspaceConfiguration Name="Release" Selected="yes">
       <Project Name="opdracht6_2" ConfigName="Release"/>
