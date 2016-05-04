@@ -23,16 +23,16 @@
     <File Name="main.cpp"/>
     <File Name="circle.cpp"/>
     <File Name="circle.hpp"/>
+    <File Name="filledrectangle.cpp"/>
+    <File Name="filledrectangle.hpp"/>
+    <File Name="house.cpp"/>
+    <File Name="house.hpp"/>
     <File Name="line.cpp"/>
     <File Name="line.hpp"/>
     <File Name="rectangle.cpp"/>
     <File Name="rectangle.hpp"/>
     <File Name="window.cpp"/>
     <File Name="window.hpp"/>
-    <File Name="house.hpp"/>
-    <File Name="house.cpp"/>
-    <File Name="../opdracht6_1/filledrectangle.cpp"/>
-    <File Name="../opdracht6_1/filledrectangle.hpp"/>
   </VirtualDirectory>
   <Settings Type="Executable">
     <GlobalSettings>

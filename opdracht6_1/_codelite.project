@@ -23,8 +23,8 @@
     <File Name="main.cpp"/>
     <File Name="filledrectangle.cpp"/>
     <File Name="filledrectangle.hpp"/>
-    <File Name="window.hpp"/>
     <File Name="window.cpp"/>
+    <File Name="window.hpp"/>
   </VirtualDirectory>
   <Settings Type="Executable">
     <GlobalSettings>
