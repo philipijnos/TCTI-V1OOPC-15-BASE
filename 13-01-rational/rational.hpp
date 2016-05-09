@@ -9,7 +9,7 @@
 /// The counter and denominator are stored as two (signed) integers.
 /// The appropriate constructors and operators are provided.
 ///
-/// Rational values are always simplied (reduced): the counter
+/// Rational values are always simplified (reduced): the counter
 /// and denominator have no common factors.
 class rational {
 private:
