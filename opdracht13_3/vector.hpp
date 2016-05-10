@@ -1,11 +1,13 @@
 #ifndef VECTOR_HPP
 #define VECTOR_HPP
 
+#include <ostream>
+
 /// @file
 
 /// vector ADT
 //
-/// This is an ADT that iplements vector manipulations.
+/// This is an ADT that iplements 2D vector manipulation.
 /// Both x and y-values are stored in an integer.
 /// The appropriate constructors are also added.
 class vector{
@@ -95,7 +97,7 @@ public:
 	/// This operator* multiplies a natural number by a vector.
 	vector operator*(const vector & rhs) const{
 		vector temp = rhs;
-		temp *= *this;
+		temp = temp * (*this);
 		return temp;
 	}
 	
@@ -120,9 +122,9 @@ public:
 	/// operator<< vector
 	//
 	/// This operator<< prints a vector in horizontal coördinates.
-	std::ostream & operator<<( std::ostream & lhs, vector rhs ){
+	friend std::ostream & operator<<( std::ostream & lhs, const vector & rhs ){
 		return lhs << "(" << rhs.x << "," << rhs.y << ")";
 	}
-}
+};
 
 #endif // VECTOR_HPP
