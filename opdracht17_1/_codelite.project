@@ -35,6 +35,8 @@
     <File Name="vector.hpp"/>
     <File Name="window.cpp"/>
     <File Name="window.hpp"/>
+    <File Name="wall.cpp"/>
+    <File Name="wall.hpp"/>
   </VirtualDirectory>
   <Settings Type="Executable">
     <GlobalSettings>
