@@ -33,10 +33,10 @@
     <File Name="rectangle.hpp"/>
     <File Name="vector.cpp"/>
     <File Name="vector.hpp"/>
-    <File Name="window.cpp"/>
-    <File Name="window.hpp"/>
     <File Name="wall.cpp"/>
     <File Name="wall.hpp"/>
+    <File Name="window.cpp"/>
+    <File Name="window.hpp"/>
   </VirtualDirectory>
   <Settings Type="Executable">
     <GlobalSettings>

@@ -1,6 +1,7 @@
 #include "window.hpp"
 #include "line.hpp"
 #include "ball.hpp"
+#include "drawable.hpp"
 
 int main(){
    window w( vector( 128, 64 ), 2 );
