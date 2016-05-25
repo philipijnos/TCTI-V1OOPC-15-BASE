@@ -1,7 +1,7 @@
 #ifndef VECTOR_HPP
 #define VECTOR_HPP
 
-#include <ostream>
+#include "ostream"
 
 /// @file
 
@@ -23,6 +23,13 @@ public:
 	vector(int x = 0, int y = 0):
 		x(x), y(y)
 	{}
+	
+	/// operator== two vectors
+	//
+	/// This operator== checks whether two vectors are equal.
+	bool operator==( const vector & rhs){
+		return ( x == rhs.x ) && ( y == rhs.y );
+	}
 	
 	/// operator+ one vector
 	//
@@ -123,7 +130,7 @@ public:
 	//
 	/// This operator<< prints a vector in horizontal coördinates.
 	friend std::ostream & operator<<( std::ostream & lhs, const vector & rhs ){
-		return lhs << "(" << rhs.x << "," << rhs.y << ")";
+		return lhs << "(" << rhs.x << ", " << rhs.y << ")";
 	}
 };
 
