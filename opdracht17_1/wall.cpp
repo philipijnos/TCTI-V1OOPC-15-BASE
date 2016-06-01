@@ -18,5 +18,5 @@ void wall::update(){
 }
 
 void wall::draw(){
-
+	rectangle.draw();
 }

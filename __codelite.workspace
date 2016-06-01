@@ -432,13 +432,13 @@
       <Project Name="21-05-mirror" ConfigName="Release"/>
     </WorkspaceConfiguration>
   </BuildMatrix>
-  <Project Name="opdracht13_3" Path="opdracht13_3/_codelite.project" Active="Yes"/>
+  <Project Name="opdracht13_3" Path="opdracht13_3/_codelite.project" Active="No"/>
   <BuildMatrix>
     <WorkspaceConfiguration Name="Release" Selected="yes">
       <Project Name="opdracht13_3" ConfigName="Release"/>
     </WorkspaceConfiguration>
   </BuildMatrix>
-  <Project Name="opdracht17_1" Path="opdracht17_1/_codelite.project" Active="No"/>
+  <Project Name="opdracht17_1" Path="opdracht17_1/_codelite.project" Active="Yes"/>
   <BuildMatrix>
     <WorkspaceConfiguration Name="Release" Selected="yes">
       <Project Name="opdracht17_1" ConfigName="Release"/>
