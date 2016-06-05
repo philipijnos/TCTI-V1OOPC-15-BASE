@@ -366,7 +366,7 @@
       <Project Name="19-07-blink-hwlib" ConfigName="Release"/>
     </WorkspaceConfiguration>
   </BuildMatrix>
-  <Project Name="19-08-kitt-diy" Path="19-08-kitt-diy/_codelite.project" Active="No"/>
+  <Project Name="19-08-kitt-diy" Path="19-08-kitt-diy/_codelite.project" Active="Yes"/>
   <BuildMatrix>
     <WorkspaceConfiguration Name="Release" Selected="yes">
       <Project Name="19-08-kitt-diy" ConfigName="Release"/>
@@ -450,7 +450,7 @@
       <Project Name="opdracht17_2" ConfigName="Release"/>
     </WorkspaceConfiguration>
   </BuildMatrix>
-  <Project Name="opdracht17_3" Path="opdracht17_3/_codelite.project" Active="Yes"/>
+  <Project Name="opdracht17_3" Path="opdracht17_3/_codelite.project" Active="No"/>
   <BuildMatrix>
     <WorkspaceConfiguration Name="Release" Selected="yes">
       <Project Name="opdracht17_3" ConfigName="Release"/>
