@@ -1,19 +1,20 @@
 #include "hwlib.hpp"
+int main( void ){
 
-int main( void ){	
-   // kill the watchdog
-   WDT->WDT_MR = WDT_MR_WDDIS;
-   
-   namespace target = hwlib::target;----
-   auto ds   = target::pin_out( target::pins::d8 );
-   auto shcp = target::pin_out( target::pins::d9 );
-   auto stcp = target::pin_out( target::pins::d10 );
-   auto spi  = hwlib::spi_bus_bit_banged_sclk_mosi_miso( 
-      shcp, 
-      ds, 
-      hwlib::pin_in_dummy 
-   );
-   auto leds = hwlib::hc595( spi, stcp );
-   
-   hwlib::kitt( leds );
+ // kill the watchdog
+ WDT->WDT_MR = WDT_MR_WDDIS;
+
+ namespace target = hwlib::target;
+
+ auto scl = target::pin_oc{ target::pins::scl };
+ auto sda = target::pin_oc{ target::pins::sda };
+
+ auto i2c_bus = hwlib::i2c_bus_bit_banged_scl_sda{ scl,sda };
+
+ auto display = hwlib::glcd_oled{ i2c_bus, 0x3c };
+
+ //hwlib::graphics_random_circles( display );
+ display.clear();
+ display.write(hwlib::location{0, 0});
+ 
 }

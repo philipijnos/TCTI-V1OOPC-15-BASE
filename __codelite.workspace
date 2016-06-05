@@ -384,7 +384,7 @@
       <Project Name="19-10-kitt-hwlib" ConfigName="Release"/>
     </WorkspaceConfiguration>
   </BuildMatrix>
-  <Project Name="20-01-kitt" Path="20-01-kitt/_codelite.project" Active="No"/>
+  <Project Name="Schermtestjes" Path="20-01-kitt/_codelite.project" Active="Yes"/>
   <BuildMatrix>
     <WorkspaceConfiguration Name="Release" Selected="yes">
       <Project Name="20-01-kitt" ConfigName="Release"/>
@@ -438,7 +438,7 @@
       <Project Name="opdracht13_3" ConfigName="Release"/>
     </WorkspaceConfiguration>
   </BuildMatrix>
-  <Project Name="opdracht17_1" Path="opdracht17_1/_codelite.project" Active="Yes"/>
+  <Project Name="opdracht17_1" Path="opdracht17_1/_codelite.project" Active="No"/>
   <BuildMatrix>
     <WorkspaceConfiguration Name="Release" Selected="yes">
       <Project Name="opdracht17_1" ConfigName="Release"/>
