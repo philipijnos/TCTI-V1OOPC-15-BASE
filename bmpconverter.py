@@ -14,7 +14,7 @@ def int2bin(input):
         output += table[int(input[i], 16)]
     return output
 
-filename = "Zwart-wit8.bmp"
+filename = "Zwart-wit.bmp"
 with open(filename, 'rb') as f:
     content = f.read()
 hC = str(binascii.hexlify(content))[2:-1]       #hC == hexContent
@@ -34,6 +34,7 @@ else:
         hL = 28+dibHeaderLength         #hL == headerLength
         colorTable = []
         imageTable = []
+        pixelAmount = 0
         for i in range(colorAmount):
             colorDummy = (int(hC[hL+8*i:hL+2+8*i], 16), int(hC[hL+2+8*i:hL+4+8*i], 16), int(hC[hL+4+8*i:hL+6+8*i], 16))
             if colorDummy[0] < 129 and colorDummy[1] < 129 and colorDummy[2] < 129:
@@ -51,7 +52,8 @@ else:
                 dataDummy = int2bin(bmpData[dataLength-(y+1)*dataWidth:dataLength-y*dataWidth])
                 for x in range(imageWidth):
                     if colorTable[int(dataDummy[x])]:
-                        imageTable.append([x, y])
+                        pixelAmount += 1
+                        imageTable.append("hwlib::location{"+str(x)+", "+str(y)+"}")
         elif bitmapBase == 4:
             if imageWidth % 8 == 0:
                 dataWidth = imageWidth
@@ -61,7 +63,8 @@ else:
                 dataDummy = bmpData[dataLength-(y+1)*dataWidth:dataLength-y*dataWidth]
                 for x in range(imageWidth):
                     if colorTable[int(dataDummy[x], 16)]:
-                        imageTable.append([x, y])
+                        pixelAmount += 1
+                        imageTable.append("hwlib::location{"+str(x)+", "+str(y)+"}")
         elif bitmapBase == 8:
             if imageWidth % 8 == 0:
                 dataWidth = imageWidth
@@ -71,10 +74,21 @@ else:
                 dataDummy = bmpData[dataLength-(y+1)*dataWidth:dataLength-y*dataWidth]
                 for x in range(imageWidth):
                     if colorTable[int(dataDummy[2*x:2*x+2], 16)]:
-                        imageTable.append([x, y])
+                        pixelAmount += 1
+                        imageTable.append("hwlib::location{"+str(x)+", "+str(y)+"}")
         if imageTable:
-            file = open("ImageShower/main.cpp", "w")
-            file.write('#include "hwlib.hpp"\n#include "image.hpp\nint main(void){\n"')
-            file.write('\t//kill the watchdog\n\tWDT->WDT_MR = WDT_MR_WDDIS;')
-            file.write(str(imageTable)+"\n")
+            outputStringDummy = "("+str(imageWidth)+", "+str(imageHeight)+", "+str(pixelAmount)+", "+str(imageTable)+");\n"
+            outputString = ""
+            for c in outputStringDummy:
+                if c != "'":
+                    if c == "[":
+                        outputString += "{"
+                    elif c == "]":
+                        outputString += "}"
+                    else:
+                        outputString += c
+            file = open("imagestring.txt", "w")
+            #file.write('#include "hwlib.hpp"\n#include "image.hpp\nint main(void){\n"')
+            #file.write('\t//kill the watchdog\n\tWDT->WDT_MR = WDT_MR_WDDIS;')
+            file.write(outputString)
             file.close()
