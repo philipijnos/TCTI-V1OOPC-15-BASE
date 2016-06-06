@@ -12,7 +12,7 @@
 SOURCES :=
 
 # header files in this project
-HEADERS :=
+HEADERS := image.hpp
 
 # other places to look for files for this project
 SEARCH  := 

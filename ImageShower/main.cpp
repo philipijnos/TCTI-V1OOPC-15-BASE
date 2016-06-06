@@ -1,20 +1,25 @@
+//============================================================================
+//
+//	Created by Philippe Zwietering
+//
+//============================================================================
+
 #include "hwlib.hpp"
-int main( void ){
+#include "image.hpp"
+int main(void)
+{
+	
+    // kill the watchdog
+    WDT->WDT_MR = WDT_MR_WDDIS;
 
- // kill the watchdog
- WDT->WDT_MR = WDT_MR_WDDIS;
 
- namespace target = hwlib::target;
+    auto scl = hwlib::target::pin_oc{ hwlib::target::pins::scl };
+    auto sda = hwlib::target::pin_oc{ hwlib::target::pins::sda };
 
- auto scl = target::pin_oc{ target::pins::scl };
- auto sda = target::pin_oc{ target::pins::sda };
+    auto i2c_bus = hwlib::i2c_bus_bit_banged_scl_sda{ scl, sda };
 
- auto i2c_bus = hwlib::i2c_bus_bit_banged_scl_sda{ scl,sda };
+    auto display = hwlib::glcd_oled{ i2c_bus, 0x3c };
 
- auto display = hwlib::glcd_oled{ i2c_bus, 0x3c };
-
- //hwlib::graphics_random_circles( display );
- display.clear();
- display.write(hwlib::location{0, 0});
- 
+    display.clear();
+    display.write(hwlib::location{ 0, 0 });
 }

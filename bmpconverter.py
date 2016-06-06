@@ -1,3 +1,8 @@
+#====================================================================
+#
+#       Created by Philippe Zwietering
+#
+#====================================================================
 import binascii
 
 #Aangezien er geen goede functie is die integers omzet naar binair in stringformaat waarbij overbodige nullen bewaard blijven,
@@ -68,6 +73,8 @@ else:
                     if colorTable[int(dataDummy[2*x:2*x+2], 16)]:
                         imageTable.append([x, y])
         if imageTable:
-            file = open("imagestring.txt", "a")
+            file = open("ImageShower/main.cpp", "w")
+            file.write('#include "hwlib.hpp"\n#include "image.hpp\nint main(void){\n"')
+            file.write('\t//kill the watchdog\n\tWDT->WDT_MR = WDT_MR_WDDIS;')
             file.write(str(imageTable)+"\n")
             file.close()
