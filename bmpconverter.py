@@ -14,7 +14,7 @@ def int2bin(input):
         output += table[int(input[i], 16)]
     return output
 
-filename = "Zwart-wit.bmp"
+filename = "upton.bmp"
 with open(filename, 'rb') as f:
     content = f.read()
 hC = str(binascii.hexlify(content))[2:-1]       #hC == hexContent
@@ -77,7 +77,7 @@ else:
                         pixelAmount += 1
                         imageTable.append("hwlib::location{"+str(x)+", "+str(y)+"}")
         if imageTable:
-            outputStringDummy = "("+str(imageWidth)+", "+str(imageHeight)+", "+str(pixelAmount)+", "+str(imageTable)+");\n"
+            outputStringDummy = "("+str(imageWidth)+", "+str(imageHeight)+", "+str(pixelAmount)+");\n"+str(imageTable)+";\n"
             outputString = ""
             for c in outputStringDummy:
                 if c != "'":
