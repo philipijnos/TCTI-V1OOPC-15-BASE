@@ -8,22 +8,19 @@ class image{
 private:
 	int width;
 	int height;
-	int pixelAmount;
-	int body[][2];
+	int body[][3];
 public:
-	image(const int width, const int height, const int pixelAmount):
+	image(const int width, const int height):
 		width(width),
-		height(height),
-		pixelAmount(pixelAmount){}
+		height(height){}
 	void draw(const hwlib::location & offset = hwlib::location{0, 0});
 	void enlarge(const int s);
 	void widen(const int s);
 	void heighten(const int s);
 	int getWidth();
 	int getHeight();
-	int getPixelAmount();
 	void setPixel(const int value);
-	void setBody(const int imagebody[][2]);
+	void setBody(const int imagebody[][3]);
 	void invert();
 };
 
@@ -33,11 +30,13 @@ public:
 		auto i2c_bus = hwlib::i2c_bus_bit_banged_scl_sda{ scl, sda };
 		auto display = hwlib::glcd_oled{i2c_bus, 0x3c };
 		display.clear();
-		for(int i = 0; i<pixelAmount; i++){
+		for(int i = 0; i<(width*height); i++){
 			hwlib::location temp(0, 0);
-			temp.x = body[i][0] + offset.x;
-			temp.y = body[i][1]+ offset.y;
-			display.write(temp);
+			if(body[i][2]){
+				temp.x = body[i][0] + offset.x;
+				temp.y = body[i][1]+ offset.y;
+				display.write(temp);
+			}
 		}
 	}
 //	void image::enlarge(const int s){
@@ -56,13 +55,11 @@ public:
 	int image::getWidth(){
 		return width;
 	}
-	int image::getPixelAmount(){
-		return pixelAmount;
-	}
-	void image::setBody(const int imagebody[][2]){
-		for(int i = 0; i<pixelAmount; i++){
+	void image::setBody(const int imagebody[][3]){
+		for(int i = 0; i<(width*height); i++){
 			body[i][0] = imagebody[i][0];
 			body[i][1] = imagebody[i][1];
+			body[i][2] = imagebody[i][2];
 		}
 	}
 }

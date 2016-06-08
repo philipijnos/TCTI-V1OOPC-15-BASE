@@ -34,13 +34,12 @@ else:
         hL = 28+dibHeaderLength         #hL == headerLength
         colorTable = []
         imageTable = []
-        pixelAmount = 0
         for i in range(colorAmount):
             colorDummy = (int(hC[hL+8*i:hL+2+8*i], 16), int(hC[hL+2+8*i:hL+4+8*i], 16), int(hC[hL+4+8*i:hL+6+8*i], 16))
             if colorDummy[0] > 129 and colorDummy[1] > 129 and colorDummy[2] > 129:
-                colorTable.append(True)
+                colorTable.append("1")
             else:
-                colorTable.append(False)
+                colorTable.append("0")
         bmpData = hC[hL+8+8*(colorAmount-1):]
         dataLength = len(bmpData)
         if bitmapBase == 1:
@@ -51,9 +50,7 @@ else:
             for y in range(imageHeight):
                 dataDummy = int2bin(bmpData[dataLength-(y+1)*dataWidth:dataLength-y*dataWidth])
                 for x in range(imageWidth):
-                    if colorTable[int(dataDummy[x])]:
-                        imageTable.append("{"+str(x)+", "+str(y)+"}")
-                        pixelAmount += 1
+                    imageTable.append("{"+str(x)+","+str(y)+","+str(colorTable[int(dataDummy[x])])+"}")
         elif bitmapBase == 4:
             if imageWidth % 8 == 0:
                 dataWidth = imageWidth
@@ -62,9 +59,7 @@ else:
             for y in range(imageHeight):
                 dataDummy = bmpData[dataLength-(y+1)*dataWidth:dataLength-y*dataWidth]
                 for x in range(imageWidth):
-                    if colorTable[int(dataDummy[x], 16)]:
-                        imageTable.append("{"+str(x)+", "+str(y)+"}")
-                        pixelAmount += 1
+                    imageTable.append("{"+str(x)+","+str(y)+","+str(colorTable[int(dataDummy[x], 16)])+"}")
         elif bitmapBase == 8:
             if imageWidth % 8 == 0:
                 dataWidth = imageWidth
@@ -73,11 +68,9 @@ else:
             for y in range(imageHeight):
                 dataDummy = bmpData[dataLength-(y+1)*dataWidth:dataLength-y*dataWidth]
                 for x in range(imageWidth):
-                    if colorTable[int(dataDummy[2*x:2*x+2], 16)]:
-                        imageTable.append("{"+str(x)+", "+str(y)+"}")
-                        pixelAmount += 1
+                    imageTable.append("{"+str(x)+","+str(y)+","+str(colorTable[int(dataDummy[2*x:2*x+2], 16)])+"}")
         if imageTable:
-            outputStringDummy = "("+str(imageWidth)+", "+str(imageHeight)+", "+str(pixelAmount)+");\n"+str(imageTable)+";\n"
+            outputStringDummy = "("+str(imageWidth)+", "+str(imageHeight)+");\n"+str(imageTable)+";\n"
             outputString = ""
             for c in outputStringDummy:
                 if c != "'":
