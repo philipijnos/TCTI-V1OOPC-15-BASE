@@ -32,7 +32,8 @@
     <File Name="main.cpp"/>
     <File Name="Makefile"/>
     <File Name="image.hpp"/>
-    <File Name="invertImage.hpp"/>
+    <File Name="superImage.hpp"/>
+    <File Name="decorator.hpp"/>
   </VirtualDirectory>
   <Settings Type="Dynamic Library">
     <GlobalSettings>

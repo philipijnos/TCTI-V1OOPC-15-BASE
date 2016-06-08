@@ -2,29 +2,28 @@
 #define IMAGE_HPP
 
 #include "hwlib.hpp"
-namespace image{
+#include "superImage.hpp"
 
-class image{
+class image : public superimage{
 private:
 	int width;
 	int height;
 	int body[][3];
 public:
-	image(const int width, const int height):
-		width(width),
-		height(height){}
-	void draw(const hwlib::location & offset = hwlib::location{0, 0}) override;
-	void enlarge(const int s);
-	void widen(const int s);
-	void heighten(const int s);
-	int getWidth();
-	int getHeight();
-	void setPixel(const int value);
-	void setBody(const int imagebody[][3]);
-	void invert();
-};
-
-	void image::draw(const hwlib::location & offset){
+	image(const int w, const int h){
+		width = w;
+		height = h;
+	}
+	image(const image & img){
+		width = img.width;
+		height = img.height;
+		for(int i = 0; i<(width*height); i++){
+			body[i][0] = img.body[i][0];
+			body[i][1] = img.body[i][1];
+			body[i][2] = img.body[i][2];
+		}
+	}
+	void draw(const hwlib::location & offset = hwlib::location{0, 0}){
 		auto scl = hwlib::target::pin_oc{ hwlib::target::pins::scl };
 		auto sda = hwlib::target::pin_oc{ hwlib::target::pins::sda };
 		auto i2c_bus = hwlib::i2c_bus_bit_banged_scl_sda{ scl, sda };
@@ -39,28 +38,39 @@ public:
 			}
 		}
 	}
-//	void image::enlarge(const int s){
-//		for(int i = 0; i < pixelAmount; i++){
-//			auto tempx = body[i].x;
-//			auto tempy = body[i].y;
-//			
-//		}
-//		height *= s;
-//		width *= s;
-//		pixelAmount *= s*s;
-//	}
-	int image::getHeight(){
-		return height;
-	}
-	int image::getWidth(){
+	int getWidth(){
 		return width;
 	}
-	void image::setBody(const int imagebody[][3]){
-		for(int i = 0; i<(width*height); i++){
+	int getHeight(){
+		return height;
+	}
+	int getBodyX(const int i){
+		return body[i][0];
+	}
+	int getBodyY(const int i){
+		return body[i][1];
+	}
+	int getBodyV(const int i){
+		return body[i][2];
+	}
+	void setPixel(const int x, const int y, const int value = 0){
+		if(x >= width || y >= height){
+			return;
+		}
+		for(int i = 0; i<width*height; i++){
+			if(body[i][0] == x && body[i][1]){
+				body[i][2] = value;
+				return;
+			}
+		}
+	}
+	void setBody(const int imagebody[][3]){
+			for(int i = 0; i<(width*height); i++){
 			body[i][0] = imagebody[i][0];
 			body[i][1] = imagebody[i][1];
 			body[i][2] = imagebody[i][2];
 		}
 	}
-}
-#endif 
+};
+
+#endif //IMAGE_HPP
