@@ -14,7 +14,7 @@ def int2bin(input):
         output += table[int(input[i], 16)]
     return output
 
-filename = "upton.bmp"
+filename = "zwart.bmp"
 with open(filename, 'rb') as f:
     content = f.read()
 hC = str(binascii.hexlify(content))[2:-1]       #hC == hexContent
@@ -34,12 +34,13 @@ else:
         hL = 28+dibHeaderLength         #hL == headerLength
         colorTable = []
         imageTable = []
+        pixelAmount = 0
         for i in range(colorAmount):
             colorDummy = (int(hC[hL+8*i:hL+2+8*i], 16), int(hC[hL+2+8*i:hL+4+8*i], 16), int(hC[hL+4+8*i:hL+6+8*i], 16))
-            if colorDummy[0] < 129 and colorDummy[1] < 129 and colorDummy[2] < 129:
-                colorTable.append("1")
+            if colorDummy[0] > 129 and colorDummy[1] > 129 and colorDummy[2] > 129:
+                colorTable.append(True)
             else:
-                colorTable.append("0")
+                colorTable.append(False)
         bmpData = hC[hL+8+8*(colorAmount-1):]
         dataLength = len(bmpData)
         if bitmapBase == 1:
@@ -50,7 +51,9 @@ else:
             for y in range(imageHeight):
                 dataDummy = int2bin(bmpData[dataLength-(y+1)*dataWidth:dataLength-y*dataWidth])
                 for x in range(imageWidth):
-                    imageTable.append("{"+str(x)+", "+str(y)+", "+colorTable[int(dataDummy[x])]+"}")
+                    if colorTable[int(dataDummy[x])]:
+                        imageTable.append("{"+str(x)+", "+str(y)+"}")
+                        pixelAmount += 1
         elif bitmapBase == 4:
             if imageWidth % 8 == 0:
                 dataWidth = imageWidth
@@ -59,7 +62,9 @@ else:
             for y in range(imageHeight):
                 dataDummy = bmpData[dataLength-(y+1)*dataWidth:dataLength-y*dataWidth]
                 for x in range(imageWidth):
-                    imageTable.append("{"+str(x)+", "+str(y)+", "+colorTable[int(dataDummy[x], 16)]+"}")
+                    if colorTable[int(dataDummy[x], 16)]:
+                        imageTable.append("{"+str(x)+", "+str(y)+"}")
+                        pixelAmount += 1
         elif bitmapBase == 8:
             if imageWidth % 8 == 0:
                 dataWidth = imageWidth
@@ -68,9 +73,11 @@ else:
             for y in range(imageHeight):
                 dataDummy = bmpData[dataLength-(y+1)*dataWidth:dataLength-y*dataWidth]
                 for x in range(imageWidth):
-                    imageTable.append("{"+str(x)+", "+str(y)+", "+colorTable[int(dataDummy[2*x:2*x+2], 16)]+"}")
+                    if colorTable[int(dataDummy[2*x:2*x+2], 16)]:
+                        imageTable.append("{"+str(x)+", "+str(y)+"}")
+                        pixelAmount += 1
         if imageTable:
-            outputStringDummy = "("+str(imageWidth)+", "+str(imageHeight)+");\n"+str(imageTable)+";\n"
+            outputStringDummy = "("+str(imageWidth)+", "+str(imageHeight)+", "+str(pixelAmount)+");\n"+str(imageTable)+";\n"
             outputString = ""
             for c in outputStringDummy:
                 if c != "'":
@@ -85,3 +92,5 @@ else:
             #file.write('\t//kill the watchdog\n\tWDT->WDT_MR = WDT_MR_WDDIS;')
             file.write(outputString)
             file.close()
+        else:
+            print("Je plaatje is helemaal leeg.")
