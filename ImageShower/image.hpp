@@ -13,7 +13,7 @@ public:
 	image(const int width, const int height):
 		width(width),
 		height(height){}
-	void draw(const hwlib::location & offset = hwlib::location{0, 0});
+	void draw(const hwlib::location & offset = hwlib::location{0, 0}) override;
 	void enlarge(const int s);
 	void widen(const int s);
 	void heighten(const int s);
