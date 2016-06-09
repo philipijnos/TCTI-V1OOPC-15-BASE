@@ -2,18 +2,16 @@
 #define IMAGE_HPP
 
 #include "hwlib.hpp"
-#include "superImage.hpp"
 
-class image : public superimage{
-private:
+class image{
+protected:
 	int width;
 	int height;
 	int body[][3];
 public:
-	image(const int w, const int h){
-		width = w;
-		height = h;
-	}
+	image(const int w, const int h):
+		width(w),
+		height(h){}
 	image(const image & img){
 		width = img.width;
 		height = img.height;
@@ -65,12 +63,64 @@ public:
 		}
 	}
 	void setBody(const int imagebody[][3]){
-			for(int i = 0; i<(width*height); i++){
+		for(int i = 0; i<(width*height); i++){
 			body[i][0] = imagebody[i][0];
 			body[i][1] = imagebody[i][1];
 			body[i][2] = imagebody[i][2];
 		}
 	}
 };
-
+class invertdec : public image{
+private:
+	image & slave;
+public:
+	invertdec(image & slave):
+		slave(slave){}
+	int getHeight() override {
+		return slave.getHeight();
+	}
+	int getWidth(){
+		return slave.getWidth();
+	}
+	int getBodyX(const int i){
+		return slave.getBodyX(i);
+	}
+	int getBodyY(const int i){
+		return slave.getBodyY(i);
+	}
+	int getBodyV(const int i){
+		if(slave.getBodyV(i)){
+			return 0;
+		}
+		else{
+			return 1;
+		}
+	}
+	void setPixel(const int x, const int y, const int value = 0){
+		if(value){
+			slave.setPixel(x, y, 0);
+		}
+		else{
+			slave.setPixel(x, y, 1);
+		}
+	}
+	void setBody(const int imagebody[][3]){
+		int pixelAmount = slave.getWidth()*slave.getHeight();
+		int tempbody[pixelAmount][3] = {};
+		for(int i = 0; i<pixelAmount; i++){
+			tempbody[i][0] = imagebody[i][0];
+			tempbody[i][1] = imagebody[i][1];
+			if(imagebody[i][2]){
+				tempbody[i][2] = 0;
+			}
+			else{
+				tempbody[i][2] = 1;
+			}
+		}
+		slave.setBody(tempbody);
+	}
+//	void draw(const hwlib::location & offset = hwlib::location{0, 0}){
+//		
+//	}
+};
 #endif //IMAGE_HPP
