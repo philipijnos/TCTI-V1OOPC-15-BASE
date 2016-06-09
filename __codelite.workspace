@@ -5,5 +5,5 @@
     <WorkspaceConfiguration Name="Release" Selected="yes">
       <Project Name="ImageShower" ConfigName="Release"/>
     </WorkspaceConfiguration>
-  </BuildMatrix> 
+  </BuildMatrix>
 </CodeLite_Workspace>
