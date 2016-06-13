@@ -2,9 +2,20 @@
 #define IMAGE_HPP
 
 #include "hwlib.hpp"
+class superimage{
+public:
+	virtual void draw(const hwlib::location & offset = hwlib::location{0, 0}) = 0;
+	virtual int getWidth() = 0;
+	virtual int getHeight() = 0;
+	virtual int getBodyX(const int i) = 0;
+	virtual int getBodyY(const int i) = 0;
+	virtual int getBodyV(const int i) = 0;
+	virtual void setPixel(const int x, const int y, const int value = 0) = 0;
+	virtual void setBody(const int imagebody[][3]) = 0;
+};
 
-class image{
-protected:
+class image: public superimage{
+private:
 	int width;
 	int height;
 	int body[][3];
@@ -63,20 +74,21 @@ public:
 		}
 	}
 	void setBody(const int imagebody[][3]){
-		for(int i = 0; i<(width*height); i++){
+		for(int i = 0; i<width*height; i++){
 			body[i][0] = imagebody[i][0];
 			body[i][1] = imagebody[i][1];
 			body[i][2] = imagebody[i][2];
 		}
 	}
 };
-class invertdec : public image{
+
+class invertdecorator : public superimage{
 private:
-	image & slave;
+	superimage & slave;
 public:
-	invertdec(image & slave):
+	invertdecorator(superimage & slave):
 		slave(slave){}
-	int getHeight() override {
+	int getHeight(){
 		return slave.getHeight();
 	}
 	int getWidth(){
@@ -119,8 +131,54 @@ public:
 		}
 		slave.setBody(tempbody);
 	}
-//	void draw(const hwlib::location & offset = hwlib::location{0, 0}){
-//		
-//	}
+	void draw(const hwlib::location & offset = hwlib::location{0, 0}){
+		slave.draw(offset);
+	}
+};
+
+class imagepart : public superimage{
+private:
+	superimage & slave;
+	int width;
+	int height;
+public:
+	imagepart(superimage & slave, const int width, const int height):
+		slave(slave), width(width), height(height){}
+	int getHeight(){
+		return height;
+	}
+	int getWidth(){
+		return width;
+	}
+	int getBodyX(const int i){
+		return slave.getBodyX(i);
+	}
+	int getBodyY(const int i){
+		return slave.getBodyY(i);
+	}
+	int getBodyV(const int i){
+		return slave.getBodyV(i);
+	}
+	void setPixel(const int x, const int y, const int value = 0){
+		slave.setPixel(x, y, value);
+	}
+	void setBody(const int imagebody[][3]){
+		int tempbody[height*width][3] = {};
+		int counter = 0;
+		hwlib::cout << slave.getWidth() << "," << slave.getHeight() << "\n";
+		hwlib::cout << width << "," << height << "\n";
+		for(int i = 0; i < slave.getHeight()*slave.getWidth(); i++){
+			if(imagebody[i][0] < width && imagebody[i][1] < height){
+				tempbody[counter][0] = imagebody[i][0];
+				tempbody[counter][1] = imagebody[i][1];
+				tempbody[counter][2] = imagebody[i][2];
+				counter++;
+			}
+		}
+		slave.setBody(tempbody);
+	}
+	void draw(const hwlib::location & offset = hwlib::location{0, 0}){
+		slave.draw(offset);
+	}
 };
 #endif //IMAGE_HPP
