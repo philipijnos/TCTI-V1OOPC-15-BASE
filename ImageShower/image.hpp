@@ -10,28 +10,19 @@ public:
 	virtual int getBodyX(const int i) = 0;
 	virtual int getBodyY(const int i) = 0;
 	virtual int getBodyV(const int i) = 0;
-	virtual void setPixel(const int x, const int y, const int value = 0) = 0;
-	virtual void setBody(const int imagebody[][3]) = 0;
 };
 
 class image: public superimage{
 private:
 	int width;
 	int height;
-	int body[][3];
+	int (*body)[3];
 public:
-	image(const int w, const int h):
+	image(const int w, const int h, int (*b)[3]):
 		width(w),
-		height(h){}
-	image(const image & img){
-		width = img.width;
-		height = img.height;
-		for(int i = 0; i<(width*height); i++){
-			body[i][0] = img.body[i][0];
-			body[i][1] = img.body[i][1];
-			body[i][2] = img.body[i][2];
-		}
-	}
+		height(h),
+		body(b){}
+		
 	void draw(const hwlib::location & offset = hwlib::location{0, 0}){
 		auto scl = hwlib::target::pin_oc{ hwlib::target::pins::scl };
 		auto sda = hwlib::target::pin_oc{ hwlib::target::pins::sda };
@@ -42,7 +33,7 @@ public:
 			hwlib::location temp(0, 0);
 			if(body[i][2]){
 				temp.x = body[i][0] + offset.x;
-				temp.y = body[i][1]+ offset.y;
+				temp.y = body[i][1] + offset.y;
 				display.write(temp);
 			}
 		}
@@ -62,24 +53,6 @@ public:
 	int getBodyV(const int i){
 		return body[i][2];
 	}
-	void setPixel(const int x, const int y, const int value = 0){
-		if(x >= width || y >= height){
-			return;
-		}
-		for(int i = 0; i<width*height; i++){
-			if(body[i][0] == x && body[i][1]){
-				body[i][2] = value;
-				return;
-			}
-		}
-	}
-	void setBody(const int imagebody[][3]){
-		for(int i = 0; i<width*height; i++){
-			body[i][0] = imagebody[i][0];
-			body[i][1] = imagebody[i][1];
-			body[i][2] = imagebody[i][2];
-		}
-	}
 };
 
 class invertdecorator : public superimage{
@@ -88,19 +61,19 @@ private:
 public:
 	invertdecorator(superimage & slave):
 		slave(slave){}
-	int getHeight(){
+	int getHeight() override {
 		return slave.getHeight();
 	}
-	int getWidth(){
+	int getWidth() override {
 		return slave.getWidth();
 	}
-	int getBodyX(const int i){
+	int getBodyX(const int i) override {
 		return slave.getBodyX(i);
 	}
-	int getBodyY(const int i){
+	int getBodyY(const int i) override {
 		return slave.getBodyY(i);
 	}
-	int getBodyV(const int i){
+	int getBodyV(const int i) override {
 		if(slave.getBodyV(i)){
 			return 0;
 		}
@@ -108,30 +81,7 @@ public:
 			return 1;
 		}
 	}
-	void setPixel(const int x, const int y, const int value = 0){
-		if(value){
-			slave.setPixel(x, y, 0);
-		}
-		else{
-			slave.setPixel(x, y, 1);
-		}
-	}
-	void setBody(const int imagebody[][3]){
-		int pixelAmount = slave.getWidth()*slave.getHeight();
-		int tempbody[pixelAmount][3] = {};
-		for(int i = 0; i<pixelAmount; i++){
-			tempbody[i][0] = imagebody[i][0];
-			tempbody[i][1] = imagebody[i][1];
-			if(imagebody[i][2]){
-				tempbody[i][2] = 0;
-			}
-			else{
-				tempbody[i][2] = 1;
-			}
-		}
-		slave.setBody(tempbody);
-	}
-	void draw(const hwlib::location & offset = hwlib::location{0, 0}){
+	void draw(const hwlib::location & offset = hwlib::location{0, 0}) override {
 		slave.draw(offset);
 	}
 };
@@ -144,40 +94,22 @@ private:
 public:
 	imagepart(superimage & slave, const int width, const int height):
 		slave(slave), width(width), height(height){}
-	int getHeight(){
+	int getHeight() override {
 		return height;
 	}
-	int getWidth(){
+	int getWidth() override {
 		return width;
 	}
-	int getBodyX(const int i){
+	int getBodyX(const int i) override {
 		return slave.getBodyX(i);
 	}
-	int getBodyY(const int i){
+	int getBodyY(const int i) override {
 		return slave.getBodyY(i);
 	}
-	int getBodyV(const int i){
+	int getBodyV(const int i) override {
 		return slave.getBodyV(i);
 	}
-	void setPixel(const int x, const int y, const int value = 0){
-		slave.setPixel(x, y, value);
-	}
-	void setBody(const int imagebody[][3]){
-		int tempbody[height*width][3] = {};
-		int counter = 0;
-		hwlib::cout << slave.getWidth() << "," << slave.getHeight() << "\n";
-		hwlib::cout << width << "," << height << "\n";
-		for(int i = 0; i < slave.getHeight()*slave.getWidth(); i++){
-			if(imagebody[i][0] < width && imagebody[i][1] < height){
-				tempbody[counter][0] = imagebody[i][0];
-				tempbody[counter][1] = imagebody[i][1];
-				tempbody[counter][2] = imagebody[i][2];
-				counter++;
-			}
-		}
-		slave.setBody(tempbody);
-	}
-	void draw(const hwlib::location & offset = hwlib::location{0, 0}){
+	void draw(const hwlib::location & offset = hwlib::location{0, 0}) override {
 		slave.draw(offset);
 	}
 };
