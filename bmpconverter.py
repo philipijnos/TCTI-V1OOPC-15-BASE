@@ -14,7 +14,7 @@ def int2bin(input):
         output += table[int(input[i], 16)]
     return output
 
-filename = "zwart.bmp"
+filename = "mike.bmp"
 with open(filename, 'rb') as f:
     content = f.read()
 hC = str(binascii.hexlify(content))[2:-1]       #hC == hexContent
@@ -36,7 +36,7 @@ else:
         imageTable = []
         for i in range(colorAmount):
             colorDummy = (int(hC[hL+8*i:hL+2+8*i], 16), int(hC[hL+2+8*i:hL+4+8*i], 16), int(hC[hL+4+8*i:hL+6+8*i], 16))
-            if colorDummy[0] > 129 and colorDummy[1] > 129 and colorDummy[2] > 129:
+            if colorDummy[0] < 129 and colorDummy[1] < 129 and colorDummy[2] < 129:
                 colorTable.append("1")
             else:
                 colorTable.append("0")
@@ -62,13 +62,14 @@ else:
                     imageTable.append("{"+str(x)+","+str(y)+","+str(colorTable[int(dataDummy[x], 16)])+"}")
         elif bitmapBase == 8:
             if imageWidth % 8 == 0:
-                dataWidth = imageWidth
+                dataWidth = imageWidth*2
             else:
-                dataWidth = (imageWidth//8)*8+8
+                dataWidth = ((imageWidth//8)*8+8)*2
             for y in range(imageHeight):
                 dataDummy = bmpData[dataLength-(y+1)*dataWidth:dataLength-y*dataWidth]
                 for x in range(imageWidth):
-                    imageTable.append("{"+str(x)+","+str(y)+","+str(colorTable[int(dataDummy[2*x:2*x+2], 16)])+"}")
+                    if dataDummy[2*x:2*x+2] != '':
+                        imageTable.append("{"+str(x)+","+str(y)+","+str(colorTable[int(dataDummy[2*x:2*x+2], 16)])+"}")
         if imageTable:
             outputStringDummy = "("+str(imageWidth)+", "+str(imageHeight)+");\n"+str(imageTable)+";\n"
             outputString = ""

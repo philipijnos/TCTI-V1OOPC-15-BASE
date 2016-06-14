@@ -82,7 +82,19 @@ public:
 		}
 	}
 	void draw(const hwlib::location & offset = hwlib::location{0, 0}) override {
-		slave.draw(offset);
+		auto scl = hwlib::target::pin_oc{ hwlib::target::pins::scl };
+		auto sda = hwlib::target::pin_oc{ hwlib::target::pins::sda };
+		auto i2c_bus = hwlib::i2c_bus_bit_banged_scl_sda{ scl, sda };
+		auto display = hwlib::glcd_oled{i2c_bus, 0x3c };
+		display.clear();
+		for(int i = 0; i<(slave.getWidth()*slave.getHeight()); i++){
+			hwlib::location temp(0, 0);
+			if(!slave.getBodyV(i)){
+				temp.x = slave.getBodyX(i) + offset.x;
+				temp.y = slave.getBodyY(i) + offset.y;
+				display.write(temp);
+			}
+		}
 	}
 };
 
@@ -91,9 +103,11 @@ private:
 	superimage & slave;
 	int width;
 	int height;
+	int widthOffset;
+	int heightOffset;
 public:
-	imagepart(superimage & slave, const int width, const int height):
-		slave(slave), width(width), height(height){}
+	imagepart(superimage & slave, const int width, const int height, const int widthOffset = 0, const int heightOffset = 0):
+		slave(slave), width(width), height(height), widthOffset(widthOffset), heightOffset(heightOffset){}
 	int getHeight() override {
 		return height;
 	}
@@ -101,16 +115,43 @@ public:
 		return width;
 	}
 	int getBodyX(const int i) override {
-		return slave.getBodyX(i);
+		if(slave.getBodyX(i) < width && slave.getBodyX(i) > widthOffset){
+			return slave.getBodyX(i);
+		}
+		else{
+			return 0;
+		}
 	}
 	int getBodyY(const int i) override {
-		return slave.getBodyY(i);
+		if(slave.getBodyY(i) < height && slave.getBodyY(i) > heightOffset){
+			return slave.getBodyY(i);
+		}
+		else{
+			return 0;
+		}
 	}
 	int getBodyV(const int i) override {
-		return slave.getBodyV(i);
+		if(slave.getBodyX(i) < width && slave.getBodyY(i) < height && slave.getBodyX(i) > widthOffset && slave.getBodyY(i) > heightOffset){
+			return slave.getBodyV(i);
+		}
+		else{
+			return 0;
+		}
 	}
 	void draw(const hwlib::location & offset = hwlib::location{0, 0}) override {
-		slave.draw(offset);
+		auto scl = hwlib::target::pin_oc{ hwlib::target::pins::scl };
+		auto sda = hwlib::target::pin_oc{ hwlib::target::pins::sda };
+		auto i2c_bus = hwlib::i2c_bus_bit_banged_scl_sda{ scl, sda };
+		auto display = hwlib::glcd_oled{i2c_bus, 0x3c };
+		display.clear();
+		for(int i = 0; i<(slave.getWidth()*slave.getHeight()); i++){
+			hwlib::location temp(0, 0);
+			if(slave.getBodyV(i) && slave.getBodyX(i) < width && slave.getBodyY(i) < height && slave.getBodyX(i) > widthOffset && slave.getBodyY(i) > heightOffset){
+				temp.x = slave.getBodyX(i) + offset.x;
+				temp.y = slave.getBodyY(i) + offset.y;
+				display.write(temp);
+			}
+		}
 	}
 };
 #endif //IMAGE_HPP
