@@ -1,13 +1,3 @@
-#############################################################################
-#
-# Project Makefile
-#
-# (c) Wouter van Ooijen (www.voti.nl) 2016
-#
-# This file is in the public domain.
-# 
-#############################################################################
-
 # source files in this project (main.cpp is automatically assumed)
 SOURCES :=
 
